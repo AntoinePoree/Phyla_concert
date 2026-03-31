@@ -50,7 +50,32 @@
     <FooterSection />
 
     <!-- Poisson flottant qui traverse l'écran de temps en temps -->
-    <div v-if="showFlyingFish" class="flying-fish" aria-hidden="true">🐟</div>
+    <div
+      v-if="showFlyingFish"
+      class="flying-fish"
+      :style="fishStyle"
+      @click="catchFish"
+      title="Attrape-moi si tu peux !"
+    >
+      🐟
+    </div>
+
+    <!-- Surprise quand le poisson est attrapé -->
+    <Transition name="fish-surprise">
+      <div
+        v-if="showFishSurprise"
+        class="fish-surprise-overlay"
+        @click="showFishSurprise = false"
+      >
+        <div class="fish-surprise-box">
+          <div class="fish-surprise-emoji">🐟</div>
+          <p class="fish-surprise-title">Tu m'as eu !</p>
+          <p class="fish-surprise-sub">
+            Point faible, trop fort 😤<br /><span>Clique pour fermer</span>
+          </p>
+        </div>
+      </div>
+    </Transition>
 
     <!-- Bouton retour en haut -->
     <button
@@ -66,7 +91,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import HeroSection from "./components/HeroSection.vue";
 import CountdownSection from "./components/CountdownSection.vue";
 import SetlistSection from "./components/SetlistSection.vue";
@@ -77,19 +102,92 @@ import FooterSection from "./components/FooterSection.vue";
 const scrolled = ref(false);
 const mobileMenuOpen = ref(false);
 const showFlyingFish = ref(false);
+const showFishSurprise = ref(false);
 
-// Scroll listener
+const mousePos = ref({ x: -9999, y: -9999 });
+const fishPos = ref({ x: -80, y: 200 });
+const fishVel = ref({ x: 3, y: 0 });
+
+const fishStyle = computed(() => ({
+  left: fishPos.value.x + "px",
+  top: fishPos.value.y + "px",
+  transform: fishVel.value.x < 0 ? "scaleX(-1)" : "scaleX(1)",
+}));
+
 function onScroll() {
   scrolled.value = window.scrollY > 80;
 }
 
-// Poisson qui traverse l'écran toutes les 30 secondes
+function onMouseMove(e) {
+  mousePos.value = { x: e.clientX, y: e.clientY };
+}
+
+let fishAnimFrame = null;
+const FISH_SIZE = 40;
+const DODGE_RADIUS = 130;
+const DODGE_FORCE = 10;
+const BASE_SPEED = 3;
+
+function animateFish() {
+  if (!showFlyingFish.value) return;
+
+  const cx = fishPos.value.x + FISH_SIZE / 2;
+  const cy = fishPos.value.y + FISH_SIZE / 2;
+  const dx = mousePos.value.x - cx;
+  const dy = mousePos.value.y - cy;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+
+  let vx = fishVel.value.x;
+  let vy = fishVel.value.y;
+
+  if (dist < DODGE_RADIUS && dist > 0) {
+    vx -= (dx / dist) * DODGE_FORCE;
+    vy -= (dy / dist) * DODGE_FORCE;
+  } else {
+    vx += (BASE_SPEED - vx) * 0.04;
+    vy += (0 - vy) * 0.06;
+  }
+
+  // Limiter la vitesse max
+  const speed = Math.sqrt(vx * vx + vy * vy);
+  if (speed > 18) {
+    vx = (vx / speed) * 18;
+    vy = (vy / speed) * 18;
+  }
+
+  fishVel.value = { x: vx, y: vy };
+  fishPos.value = {
+    x: fishPos.value.x + vx,
+    y: Math.max(
+      0,
+      Math.min(window.innerHeight - FISH_SIZE, fishPos.value.y + vy),
+    ),
+  };
+
+  if (fishPos.value.x > window.innerWidth + 80) {
+    showFlyingFish.value = false;
+    return;
+  }
+
+  fishAnimFrame = requestAnimationFrame(animateFish);
+}
+
 let fishTimer = null;
 function triggerFlyingFish() {
+  if (showFlyingFish.value) return;
+  fishPos.value = {
+    x: -80,
+    y: window.innerHeight * (0.15 + Math.random() * 0.6),
+  };
+  fishVel.value = { x: BASE_SPEED, y: 0 };
   showFlyingFish.value = true;
-  setTimeout(() => {
-    showFlyingFish.value = false;
-  }, 4000);
+  fishAnimFrame = requestAnimationFrame(animateFish);
+}
+
+function catchFish() {
+  showFlyingFish.value = false;
+  cancelAnimationFrame(fishAnimFrame);
+  showFishSurprise.value = true;
 }
 
 function scrollToTop() {
@@ -98,7 +196,7 @@ function scrollToTop() {
 
 onMounted(() => {
   window.addEventListener("scroll", onScroll, { passive: true });
-  // Premier poisson après 8 secondes
+  window.addEventListener("mousemove", onMouseMove, { passive: true });
   setTimeout(() => {
     triggerFlyingFish();
     fishTimer = setInterval(triggerFlyingFish, 30_000);
@@ -107,7 +205,9 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener("scroll", onScroll);
+  window.removeEventListener("mousemove", onMouseMove);
   clearInterval(fishTimer);
+  cancelAnimationFrame(fishAnimFrame);
 });
 </script>
 
@@ -244,13 +344,76 @@ onUnmounted(() => {
 /* ---- Poisson volant ---- */
 .flying-fish {
   position: fixed;
-  bottom: 20%;
-  left: 0;
   font-size: 2.5rem;
   z-index: 999;
-  pointer-events: none;
-  animation: fish-swim 4s ease-in-out forwards;
+  cursor: pointer;
+  user-select: none;
   filter: drop-shadow(0 0 8px rgba(224, 64, 251, 0.5));
+  transition: transform 0.08s linear;
+  will-change: left, top;
+}
+
+/* ---- Surprise poisson ---- */
+.fish-surprise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+.fish-surprise-box {
+  text-align: center;
+  background: var(--gradient-card);
+  border: 1px solid var(--color-border-accent);
+  border-radius: var(--border-radius);
+  padding: 2.5rem 3rem;
+  box-shadow:
+    var(--shadow-card),
+    0 0 40px rgba(224, 64, 251, 0.3);
+  animation: bounce-in 0.4s ease both;
+}
+
+.fish-surprise-emoji {
+  font-size: 5rem;
+  display: inline-block;
+  animation: float 1.5s ease-in-out infinite;
+  margin-bottom: 0.75rem;
+}
+
+.fish-surprise-title {
+  font-size: 2rem;
+  font-weight: 900;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.fish-surprise-sub {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.fish-surprise-sub span {
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+/* ---- Transition surprise ---- */
+.fish-surprise-enter-active,
+.fish-surprise-leave-active {
+  transition: opacity 0.3s;
+}
+.fish-surprise-enter-from,
+.fish-surprise-leave-to {
+  opacity: 0;
 }
 
 /* ---- Bouton retour en haut ---- */

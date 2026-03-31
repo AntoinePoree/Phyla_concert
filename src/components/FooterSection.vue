@@ -40,8 +40,8 @@
         <div class="footer-confession">
           <p>
             <span class="confession-label">AVEUX OFFICIELS</span><br />
-            Phyla_Miila est la plus grand chanteuse de l'univers.<br />
-            Donc acheter vos places dès maintenant. 😄
+            Phyla_Miila est la plus grande chanteuse de l'univers.<br />
+            Donc achetez vos places dès maintenant. 😄
           </p>
         </div>
 

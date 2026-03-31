@@ -121,7 +121,7 @@ const setlist = ref([
   },
   { title: "Le Sub Train Qui Déraille", duration: "2:30", icon: "🚂" },
   {
-    title: "Je Serai à tes Cotés - Cover Remix De Anytime Anywhere - By Phyla",
+    title: "Je Serai à tes Côtés - Cover Remix De Anytime Anywhere - By Phyla",
     duration: "3:47",
     icon: "🔔",
     note: "Impactante",
