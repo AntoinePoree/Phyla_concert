@@ -1,10 +1,12 @@
 {
+  "type": "module",
   "name": "phyla-concert",
   "version": "1.0.0",
   "description": "Le concert de Phyla_Miila - Poisson d'Avril 2026",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "generate-preview": "node scripts/generate-preview.js",
+    "build": "node scripts/generate-preview.js && vite build",
     "preview": "vite preview",
     "deploy": "npm run build && gh-pages -d dist"
   },
@@ -14,6 +16,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.0",
     "gh-pages": "^6.1.1",
+    "sharp": "^0.34.5",
     "vite": "^5.0.0"
   }
 }
