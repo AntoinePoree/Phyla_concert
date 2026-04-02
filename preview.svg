@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <!-- Fond dégradé violet foncé -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f0520"/>
+      <stop offset="50%" stop-color="#1a0835"/>
+      <stop offset="100%" stop-color="#0a0218"/>
+    </linearGradient>
+    <!-- Dégradé titre -->
+    <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#9d50e0"/>
+      <stop offset="50%" stop-color="#e040fb"/>
+      <stop offset="100%" stop-color="#7B2FBE"/>
+    </linearGradient>
+    <!-- Orbe 1 -->
+    <radialGradient id="orb1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7B2FBE" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#7B2FBE" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Orbe 2 -->
+    <radialGradient id="orb2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E040FB" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#E040FB" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur1">
+      <feGaussianBlur stdDeviation="60"/>
+    </filter>
+    <filter id="blur2">
+      <feGaussianBlur stdDeviation="45"/>
+    </filter>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Fond -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Orbes lumineuses -->
+  <ellipse cx="150" cy="180" rx="320" ry="320" fill="url(#orb1)" filter="url(#blur1)"/>
+  <ellipse cx="1050" cy="480" rx="280" ry="280" fill="url(#orb2)" filter="url(#blur2)"/>
+
+  <!-- Étoiles ✦ -->
+  <text x="80"  y="80"  font-size="18" fill="#E040FB" opacity="0.7">✦</text>
+  <text x="300" y="55"  font-size="12" fill="#E040FB" opacity="0.5">✦</text>
+  <text x="500" y="30"  font-size="22" fill="#9d50e0" opacity="0.6">✦</text>
+  <text x="750" y="70"  font-size="14" fill="#E040FB" opacity="0.55">✦</text>
+  <text x="950" y="45"  font-size="20" fill="#9d50e0" opacity="0.5">✦</text>
+  <text x="1100" y="100" font-size="16" fill="#E040FB" opacity="0.6">✦</text>
+  <text x="1150" y="300" font-size="24" fill="#9d50e0" opacity="0.5">✦</text>
+  <text x="50"  y="400" font-size="18" fill="#E040FB" opacity="0.55">✦</text>
+  <text x="180" y="560" font-size="14" fill="#9d50e0" opacity="0.6">✦</text>
+  <text x="420" y="600" font-size="20" fill="#E040FB" opacity="0.5">✦</text>
+  <text x="700" y="580" font-size="12" fill="#9d50e0" opacity="0.7">✦</text>
+  <text x="900" y="610" font-size="18" fill="#E040FB" opacity="0.55">✦</text>
+  <text x="1080" y="560" font-size="22" fill="#9d50e0" opacity="0.5">✦</text>
+  <text x="1160" y="180" font-size="14" fill="#E040FB" opacity="0.6">✦</text>
+  <text x="350" y="130" font-size="10" fill="#E040FB" opacity="0.45">✦</text>
+  <text x="870" y="120" font-size="16" fill="#9d50e0" opacity="0.5">✦</text>
+
+  <!-- Badge "ÉVÉNEMENT EXCLUSIF" -->
+  <rect x="430" y="80" width="340" height="40" rx="20" fill="rgba(224,64,251,0.12)" stroke="#E040FB" stroke-width="1.5"/>
+  <circle cx="465" cy="100" r="5" fill="#E040FB"/>
+  <text x="485" y="106" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#E040FB" letter-spacing="3">ÉVÉNEMENT EXCLUSIF</text>
+
+  <!-- "LE CONCERT DE" -->
+  <text x="600" y="195" font-family="Arial, sans-serif" font-size="32" font-weight="400" fill="#9a8ab0" text-anchor="middle" letter-spacing="8">LE CONCERT DE</text>
+
+  <!-- "Phyla_Miila" — titre principal -->
+  <text x="600" y="330" font-family="Arial Black, Arial, sans-serif" font-size="130" font-weight="900" fill="url(#titleGrad)" text-anchor="middle" filter="url(#glow)">Phyla_Miila</text>
+
+  <!-- Badge date -->
+  <rect x="350" y="370" width="500" height="70" rx="14" fill="rgba(123,47,190,0.18)" stroke="rgba(157,80,224,0.4)" stroke-width="1.5"/>
+  <text x="600" y="417" font-family="Arial, sans-serif" font-size="34" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="2">📅  30 Avril 2026</text>
+
+  <!-- Sous-titre -->
+  <text x="600" y="490" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#E040FB" text-anchor="middle">🎵  L'événement de l'année  🎵</text>
+
+  <!-- Tagline -->
+  <text x="600" y="535" font-family="Arial, sans-serif" font-size="17" fill="#9a8ab0" text-anchor="middle">Une nuit inoubliable, une voix légendaire,</text>
+  <text x="600" y="558" font-family="Arial, sans-serif" font-size="17" fill="#9a8ab0" text-anchor="middle">un moment dans l'histoire du streaming français.</text>
+
+  <!-- URL discrète en bas -->
+  <text x="600" y="608" font-family="Arial, sans-serif" font-size="13" fill="#5a4a6a" text-anchor="middle">antoineporee.github.io/Phyla_concert</text>
+</svg>
