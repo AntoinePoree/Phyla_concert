@@ -113,7 +113,7 @@ const faqItems = ref([
     question: "Le pass VIP est-il vraiment réel ?",
     answer: "...",
     bonus:
-      "Venez dans les mp de Menth, et lâchez un 'Je te fais l'amour tout les jours de la semaine pendant 24h non-stop' et ne le crier pas trop fort à Phyla ♥",
+      "Demandé à Phyla...",
   },
 ]);
 </script>

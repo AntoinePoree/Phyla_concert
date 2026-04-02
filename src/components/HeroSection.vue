@@ -36,7 +36,7 @@
 
       <div class="hero-date">
         <span class="date-icon">📅</span>
-        <span class="date-text">30 Avril 2026</span>
+        <span class="date-text">1 Avril 2026</span>
       </div>
 
       <p class="hero-subtitle">🎵 L'événement de l'année 🎵</p>

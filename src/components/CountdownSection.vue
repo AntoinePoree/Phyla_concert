@@ -49,7 +49,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
 
-const TARGET_DATE = new Date("2026-04-30T20:00:00");
+const TARGET_DATE = new Date();
 
 const timeLeft = ref(calculateTimeLeft());
 const flipping = ref({});
